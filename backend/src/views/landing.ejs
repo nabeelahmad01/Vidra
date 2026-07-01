@@ -773,8 +773,7 @@
           const dlBtn = document.createElement('a');
           dlBtn.className = 'dl-icon-btn';
           dlBtn.innerText = 'Download';
-          dlBtn.href = v.url;
-          dlBtn.target = '_blank';
+          dlBtn.href = '/api/download/proxy?url=' + encodeURIComponent(v.url) + '&filename=' + encodeURIComponent(result.title + '.' + (v.format || 'mp4'));
 
           item.appendChild(label);
           item.appendChild(dlBtn);

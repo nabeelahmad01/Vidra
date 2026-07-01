@@ -2,6 +2,9 @@ import { Router, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { Queue } from 'bullmq';
 import crypto from 'crypto';
+import https from 'https';
+import http from 'http';
+import { URL } from 'url';
 import path from 'path';
 import fs from 'fs';
 import rateLimit from 'express-rate-limit';
@@ -229,5 +232,49 @@ setInterval(() => {
     });
   });
 }, 10 * 60 * 1000); // Check every 10 minutes
+
+// 6. Proxy direct video streams to bypass YouTube 403 Forbidden limits
+router.get('/download/proxy', ssrfFilter, (req: Request, res: Response) => {
+  const { url, filename } = req.query;
+  if (!url) {
+    return res.status(400).send('URL is required');
+  }
+
+  const targetUrl = decodeURIComponent(url as string);
+  const targetFilename = (filename as string) || 'video.mp4';
+
+  try {
+    const parsedUrl = new URL(targetUrl);
+    const client = parsedUrl.protocol === 'https:' ? https : http;
+
+    const requestOptions = {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': '*/*',
+        'Accept-Encoding': 'identity',
+        'Connection': 'keep-alive'
+      }
+    };
+
+    const proxyReq = client.get(targetUrl, requestOptions, (proxyRes) => {
+      // Set response headers to force download attachment
+      res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(targetFilename)}"`);
+      res.setHeader('Content-Type', proxyRes.headers['content-type'] || 'video/mp4');
+      if (proxyRes.headers['content-length']) {
+        res.setHeader('Content-Length', proxyRes.headers['content-length']);
+      }
+      
+      proxyRes.pipe(res);
+    });
+
+    proxyReq.on('error', (err) => {
+      console.error('[Proxy Download] Native stream fail:', err.message);
+      res.status(500).send('Failed to stream download');
+    });
+  } catch (err: any) {
+    console.error('[Proxy Download] Invalid URL parser error:', err.message);
+    res.status(400).send('Invalid video URL provided');
+  }
+});
 
 export default router;
