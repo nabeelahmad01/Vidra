@@ -11,13 +11,12 @@ import { cheerioScrapingPass } from '../extractors/generic/cheerio-pass';
 import { puppeteerScrapingPass } from '../extractors/generic/puppeteer-pass';
 import { REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, REDIS_TLS, REDIS_TTL_SEC, DOWNLOADS_DIR } from '../config/constants';
 
-// Redis Client for status checking and caching (use rediss:// if TLS enabled)
-const protocol = REDIS_TLS ? 'rediss' : 'redis';
-const auth = REDIS_PASSWORD ? `default:${encodeURIComponent(REDIS_PASSWORD)}@` : '';
-const redisUrl = `${protocol}://${auth}${REDIS_HOST}:${REDIS_PORT}`;
-
 export const redisClient = createClient({
-  url: redisUrl,
+  socket: {
+    host: REDIS_HOST,
+    port: REDIS_PORT,
+    tls: REDIS_TLS
+  },
   username: 'default',
   password: REDIS_PASSWORD
 });
