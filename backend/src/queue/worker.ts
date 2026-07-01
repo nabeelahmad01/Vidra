@@ -106,8 +106,7 @@ function downloadStream(url: string, formatId: string, destPath: string): Promis
     const dlpPath = getDlpPath();
     const args = [
       '-f', formatId,
-      '--client-impersonate', 'chrome',
-      '--extractor-args', 'youtube:player_client=ios,web',
+      '--impersonate', 'chrome',
       '-o', destPath,
       url
     ];
