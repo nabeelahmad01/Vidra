@@ -18,7 +18,7 @@ if (!fs.existsSync(DOWNLOADS_DIR)) {
 export const PUBLIC_HOST = process.env.PUBLIC_HOST || `http://localhost:${PORT}`;
 
 // Extraction timing configurations
-export const YTDLP_TIMEOUT_MS = 15000;
+export const YTDLP_TIMEOUT_MS = 60000;
 export const PUPPETEER_STAGE_TIMEOUT_MS = 10000;
 export const REDIS_TTL_SEC = 600; // 10 minutes cache TTL
 
