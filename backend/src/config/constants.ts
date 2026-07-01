@@ -5,6 +5,8 @@ export const PORT = process.env.PORT || 3000;
 export const NODE_ENV = process.env.NODE_ENV || 'production';
 export const REDIS_HOST = process.env.REDIS_HOST || '127.0.0.1';
 export const REDIS_PORT = parseInt(process.env.REDIS_PORT || '6379', 10);
+export const REDIS_PASSWORD = process.env.REDIS_PASSWORD || '';
+export const REDIS_TLS = process.env.REDIS_TLS === 'true' || REDIS_HOST.includes('upstash.io') || REDIS_HOST.includes('aivencloud.com');
 export const JWT_SECRET = process.env.JWT_SECRET || 'super_secure_vidra_jwt_secret_change_me_in_production';
 
 // Location to store downloaded / merged assets temporarilly
