@@ -101,7 +101,6 @@ export const puppeteerWorker = new Worker(
   { connection: queueConnection, concurrency: 2 } // Keep low to limit browser resource usage
 );
 
-// Helper to spawn yt-dlp download streams
 function downloadStream(url: string, formatId: string, destPath: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const dlpPath = getDlpPath();
@@ -111,10 +110,22 @@ function downloadStream(url: string, formatId: string, destPath: string): Promis
       url
     ];
 
+    console.log(`[downloadStream] Running: ${dlpPath} ${args.join(' ')}`);
+
     const child = spawn(dlpPath, args);
+    let stderrData = '';
+
+    child.stderr.on('data', (data) => {
+      stderrData += data.toString();
+    });
+
     child.on('close', (code) => {
-      if (code === 0) resolve();
-      else reject(new Error(`yt-dlp download failed with code ${code}`));
+      if (code === 0) {
+        resolve();
+      } else {
+        console.error(`[downloadStream] yt-dlp failed with code ${code}. Error: ${stderrData}`);
+        reject(new Error(`yt-dlp download failed with code ${code}: ${stderrData.split('\n')[0]}`));
+      }
     });
   });
 }
