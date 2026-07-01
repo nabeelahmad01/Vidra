@@ -21,6 +21,23 @@ router.get('/', (req: Request, res: Response) => {
   res.render('landing', { siteHost: PUBLIC_HOST });
 });
 
+// Legal and Compliance Pages (Required for AdSense)
+router.get('/privacy-policy', (req: Request, res: Response) => {
+  res.render('privacy-policy');
+});
+
+router.get('/terms-conditions', (req: Request, res: Response) => {
+  res.render('terms-conditions');
+});
+
+router.get('/disclaimer', (req: Request, res: Response) => {
+  res.render('disclaimer');
+});
+
+router.get('/contact', (req: Request, res: Response) => {
+  res.render('contact');
+});
+
 // GET /blog - Articles index list
 router.get('/blog', (req: Request, res: Response) => {
   const posts = blogRepository.getAll();

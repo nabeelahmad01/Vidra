@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Disclaimer - Vidra Downloader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --app-bg: #EBF0FF;
+      --glass-surface: rgba(255, 255, 255, 0.44);
+      --glass-border: rgba(255, 255, 255, 0.75);
+      --text-primary: #1A1F3A;
+      --text-secondary: #6B7494;
+      --primary-teal: #00E5A0;
+      --primary-coral: #FF6B5A;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      background-color: var(--app-bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+      padding: 40px 20px;
+    }
+    .glow-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .glow-teal { top: -100px; left: -100px; width: 400px; height: 400px; background-color: var(--primary-teal); opacity: 0.12; }
+    .glow-coral { bottom: -100px; right: -100px; width: 380px; height: 380px; background-color: var(--primary-coral); opacity: 0.12; }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+      z-index: 1;
+      position: relative;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 24px;
+      transition: transform 0.2s;
+    }
+    .back-btn:hover { transform: translateX(-4px); }
+    
+    .card {
+      background: var(--glass-surface);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--text-primary) 30%, #51428a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .date {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 28px 0 12px 0;
+    }
+    p, li {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+    ul {
+      margin-left: 20px;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-circle glow-teal"></div>
+  <div class="glow-circle glow-coral"></div>
+
+  <div class="container">
+    <a href="/" class="back-btn">← Back to Home</a>
+    
+    <div class="card">
+      <h1>Disclaimer</h1>
+      <div class="date">Last Updated: July 2026</div>
+
+      <p>If you require any more information or have any questions about our site's disclaimer, please feel free to contact us by email or via our contact form.</p>
+
+      <h2>1. Online Video Tool Scope</h2>
+      <p>All the information on this website - Vidra - is published in good faith and for general information purpose only. Vidra does not make any warranties about the completeness, reliability, and accuracy of this information. Any action you take upon the information you find on this website, is strictly at your own risk. Vidra will not be liable for any losses and/or damages in connection with the use of our website or app.</p>
+
+      <h2>2. No Media Hosting</h2>
+      <p>We do not store or download any media files on our physical databases. Our search engine extracts download URLs directly from third-party hosting servers (e.g., YouTube CDN, Facebook, Instagram) that serve public video content. Users are responsible for obtaining permissions from copyright owners before using any downloaded media.</p>
+
+      <h2>3. Consent and Fair Practice</h2>
+      <p>By using our website or app, you hereby consent to our disclaimer and agree to its terms. We comply with all DMCA copyright procedures. If you are a copyright owner or an agent thereof and believe that any content fetched via Vidra infringes upon your copyrights, you may request that our server filters out specific URLs by sending a notice to our contact support.</p>
+    </div>
+  </div>
+</body>
+</html>

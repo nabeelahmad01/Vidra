@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Vidra Downloader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --app-bg: #EBF0FF;
+      --glass-surface: rgba(255, 255, 255, 0.44);
+      --glass-border: rgba(255, 255, 255, 0.75);
+      --text-primary: #1A1F3A;
+      --text-secondary: #6B7494;
+      --primary-teal: #00E5A0;
+      --primary-coral: #FF6B5A;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      background-color: var(--app-bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+      padding: 40px 20px;
+    }
+    .glow-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .glow-teal { top: -100px; left: -100px; width: 400px; height: 400px; background-color: var(--primary-teal); opacity: 0.12; }
+    .glow-coral { bottom: -100px; right: -100px; width: 380px; height: 380px; background-color: var(--primary-coral); opacity: 0.12; }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+      z-index: 1;
+      position: relative;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 24px;
+      transition: transform 0.2s;
+    }
+    .back-btn:hover { transform: translateX(-4px); }
+    
+    .card {
+      background: var(--glass-surface);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--text-primary) 30%, #51428a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+    input, textarea {
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(26, 31, 58, 0.15);
+      background: rgba(255, 255, 255, 0.5);
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, textarea:focus {
+      border-color: var(--primary-teal);
+    }
+    button {
+      padding: 16px;
+      background: linear-gradient(135deg, var(--primary-teal), var(--primary-coral));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 107, 90, 0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 10px;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 107, 90, 0.3);
+    }
+    .success-msg {
+      display: none;
+      padding: 16px;
+      background: rgba(0, 229, 160, 0.1);
+      border: 1px solid var(--primary-teal);
+      border-radius: 12px;
+      color: #007c57;
+      font-weight: 600;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-circle glow-teal"></div>
+  <div class="glow-circle glow-coral"></div>
+
+  <div class="container">
+    <a href="/" class="back-btn">← Back to Home</a>
+    
+    <div class="card">
+      <h1>Contact Us</h1>
+      <p>Have questions, feature requests, or DMCA removal queries? Send us a message and we'll get back to you shortly.</p>
+
+      <form id="contactForm">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" required placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" required placeholder="Enter your email address">
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" rows="5" required placeholder="Type your message here..."></textarea>
+        </div>
+        <button type="submit">Send Message</button>
+      </form>
+      <div id="successMessage" class="success-msg">Message sent successfully! Thank you for contacting us.</div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('successMessage').style.display = 'block';
+    });
+  </script>
+</body>
+</html>

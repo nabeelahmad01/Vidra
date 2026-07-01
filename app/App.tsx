@@ -15,6 +15,7 @@ export default function App() {
   const [currentScreen, setCurrentScreen] = useState<'Home' | 'Results' | 'Downloads' | 'Settings'>('Home');
   const [navigationHistory, setNavigationHistory] = useState<string[]>(['Home']);
   const [resultsParams, setResultsParams] = useState<any>(null);
+  const [showSplash, setShowSplash] = useState<boolean>(true);
 
   // Auto register device on app start if token is missing
   useEffect(() => {
@@ -31,6 +32,13 @@ export default function App() {
       }
     };
     initAuth();
+
+    // Fade-out timer for premium splash screen overlay
+    const splashTimer = setTimeout(() => {
+      setShowSplash(false);
+    }, 2500);
+
+    return () => clearTimeout(splashTimer);
   }, []);
 
   // Custom Navigation methods
@@ -93,6 +101,32 @@ export default function App() {
   };
 
   const showTabBar = currentScreen !== 'Results';
+
+  if (showSplash) {
+    return (
+      <LinearGradient
+        colors={[COLORS.appBackground, '#10142C']}
+        style={styles.splashContainer}
+      >
+        <View style={styles.splashInner}>
+          <LinearGradient
+            colors={[COLORS.primaryTeal, COLORS.primaryCoral]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.splashIconWrapper}
+          >
+            <Icon name="download-cloud" size={42} color="#FFFFFF" />
+          </LinearGradient>
+          <Text style={styles.splashTitle}>Vidra</Text>
+          <Text style={styles.splashSubtitle}>Universal Video Downloader</Text>
+          <View style={styles.splashLoadingContainer}>
+            <Text style={styles.splashLoadingText}>Initializing engine...</Text>
+          </View>
+        </View>
+        <Text style={styles.splashVersion}>Version 1.0.0 (Beta)</Text>
+      </LinearGradient>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -219,6 +253,59 @@ const styles = StyleSheet.create({
     height: '100%',
     width: 60,
     position: 'relative',
+  },
+  splashContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  splashInner: {
+    alignItems: 'center',
+  },
+  splashIconWrapper: {
+    width: 90,
+    height: 90,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    shadowColor: COLORS.primaryCoral,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 15,
+    elevation: 8,
+  },
+  splashTitle: {
+    fontSize: 48,
+    fontWeight: '900',
+    color: '#FFFFFF',
+    letterSpacing: -1.5,
+    marginBottom: 4,
+  },
+  splashSubtitle: {
+    fontSize: 15,
+    color: COLORS.tabBarInactive,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+    marginBottom: 40,
+  },
+  splashLoadingContainer: {
+    marginTop: 20,
+  },
+  splashLoadingText: {
+    color: COLORS.primaryTeal,
+    fontSize: 13,
+    fontWeight: '700',
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
+  },
+  splashVersion: {
+    position: 'absolute',
+    bottom: 30,
+    color: COLORS.tabBarInactive,
+    fontSize: 11,
+    fontWeight: '600',
+    letterSpacing: 0.5,
   },
   activePill: {
     position: 'absolute',

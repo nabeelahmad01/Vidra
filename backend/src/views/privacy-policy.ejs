@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - Vidra Downloader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --app-bg: #EBF0FF;
+      --glass-surface: rgba(255, 255, 255, 0.44);
+      --glass-border: rgba(255, 255, 255, 0.75);
+      --text-primary: #1A1F3A;
+      --text-secondary: #6B7494;
+      --primary-teal: #00E5A0;
+      --primary-coral: #FF6B5A;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      background-color: var(--app-bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+      padding: 40px 20px;
+    }
+    .glow-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .glow-teal { top: -100px; left: -100px; width: 400px; height: 400px; background-color: var(--primary-teal); opacity: 0.12; }
+    .glow-coral { bottom: -100px; right: -100px; width: 380px; height: 380px; background-color: var(--primary-coral); opacity: 0.12; }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+      z-index: 1;
+      position: relative;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 24px;
+      transition: transform 0.2s;
+    }
+    .back-btn:hover { transform: translateX(-4px); }
+    
+    .card {
+      background: var(--glass-surface);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--text-primary) 30%, #51428a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .date {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 28px 0 12px 0;
+    }
+    p, li {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+    ul {
+      margin-left: 20px;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-circle glow-teal"></div>
+  <div class="glow-circle glow-coral"></div>
+
+  <div class="container">
+    <a href="/" class="back-btn">← Back to Home</a>
+    
+    <div class="card">
+      <h1>Privacy Policy</h1>
+      <div class="date">Last Updated: July 2026</div>
+
+      <p>At Vidra Downloader, accessible from our site, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Vidra and how we use it.</p>
+
+      <h2>1. Information We Collect</h2>
+      <p>We do not require users to create accounts, and we do not store any personal identity records. We may collect minimal analytical telemetry to improve app services, which includes:</p>
+      <ul>
+        <li>Anonymous Device IDs to enforce search rate-limits.</li>
+        <li>Basic system parameters (OS version, device model) for performance optimization.</li>
+        <li>Extraction requests count to manage system load.</li>
+      </ul>
+
+      <h2>2. Cookies and Web Beacons</h2>
+      <p>Like any other website, Vidra uses 'cookies'. These cookies are used to store information including visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information.</p>
+
+      <h2>3. Google DoubleClick DART Cookie</h2>
+      <p>Google is one of a third-party vendor on our site. It also uses cookies, known as DART cookies, to serve ads to our site visitors based upon their visit to our site and other sites on the internet. However, visitors may choose to decline the use of DART cookies by visiting the Google ad and content network Privacy Policy at the following URL – <a href="https://policies.google.com/technologies/ads" target="_blank">https://policies.google.com/technologies/ads</a></p>
+
+      <h2>4. Advertising Partners Privacy Policies</h2>
+      <p>Third-party ad servers or ad networks use technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on Vidra, which are sent directly to users' browsers. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.</p>
+      <p>Note that Vidra has no access to or control over these cookies that are used by third-party advertisers.</p>
+
+      <h2>5. CCPA Privacy Rights & GDPR Data Protection Rights</h2>
+      <p>We want to make sure you are fully aware of all of your data protection rights. Every user is entitled to the following:</p>
+      <ul>
+        <li><strong>The right to access:</strong> You have the right to request copies of your minimal analytical data.</li>
+        <li><strong>The right to rectification:</strong> You have the right to request that we correct any information you believe is inaccurate.</li>
+        <li><strong>The right to erasure:</strong> You have the right to request that we erase your anonymous device token session.</li>
+      </ul>
+
+      <h2>6. Consent</h2>
+      <p>By using our website or mobile application, you hereby consent to our Privacy Policy and agree to its terms.</p>
+    </div>
+  </div>
+</body>
+</html>

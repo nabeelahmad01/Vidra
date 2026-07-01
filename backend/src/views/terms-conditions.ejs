@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms and Conditions - Vidra Downloader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --app-bg: #EBF0FF;
+      --glass-surface: rgba(255, 255, 255, 0.44);
+      --glass-border: rgba(255, 255, 255, 0.75);
+      --text-primary: #1A1F3A;
+      --text-secondary: #6B7494;
+      --primary-teal: #00E5A0;
+      --primary-coral: #FF6B5A;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      background-color: var(--app-bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+      padding: 40px 20px;
+    }
+    .glow-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .glow-teal { top: -100px; left: -100px; width: 400px; height: 400px; background-color: var(--primary-teal); opacity: 0.12; }
+    .glow-coral { bottom: -100px; right: -100px; width: 380px; height: 380px; background-color: var(--primary-coral); opacity: 0.12; }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+      z-index: 1;
+      position: relative;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 24px;
+      transition: transform 0.2s;
+    }
+    .back-btn:hover { transform: translateX(-4px); }
+    
+    .card {
+      background: var(--glass-surface);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--text-primary) 30%, #51428a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .date {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 28px 0 12px 0;
+    }
+    p, li {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+    ul {
+      margin-left: 20px;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-circle glow-teal"></div>
+  <div class="glow-circle glow-coral"></div>
+
+  <div class="container">
+    <a href="/" class="back-btn">← Back to Home</a>
+    
+    <div class="card">
+      <h1>Terms and Conditions</h1>
+      <div class="date">Last Updated: July 2026</div>
+
+      <p>Welcome to Vidra Downloader! These terms and conditions outline the rules and regulations for the use of Vidra's Website and Mobile App.</p>
+
+      <h2>1. Intellectual Property Disclaimer</h2>
+      <p>Vidra is an online link analysis tool. We do not host, store, or stream any videos or audio files on our servers. The media extracted via our engine is fetched directly from the respective third-party platform CDN. All brand names, trademarks, logos, and platforms listed (YouTube, TikTok, Facebook, Instagram, Twitter) are the property of their respective owners. Vidra is independent and not affiliated with these platforms.</p>
+
+      <h2>2. Fair Use Guidelines</h2>
+      <p>Vidra is intended for personal, educational, and offline review purposes only. By using this service, you agree not to use the extracted content for commercial distribution or copyright infringement. Users bear full responsibility for any violations of local copyright laws.</p>
+
+      <h2>3. Restrictions on Use</h2>
+      <p>You are specifically restricted from all of the following:</p>
+      <ul>
+        <li>Using Vidra to download copyrighted materials without the original owner's permission.</li>
+        <li>Spamming or flooding our extraction APIs using automated scrapers or bots.</li>
+        <li>Bypassing or attempting to bypass rate limits or SSRF security layers.</li>
+        <li>Using this website or app in any way that is or may be damaging to this website.</li>
+      </ul>
+
+      <h2>4. Limitation of Liability</h2>
+      <p>In no event shall Vidra, nor any of its developers, be held liable for anything arising out of or in any way connected with your use of this website or app. Vidra is provided "as is," with all faults, and we express no representations or warranties of any kind related to our extraction stability or availability.</p>
+
+      <h2>5. Severity of Terms</h2>
+      <p>We reserve the right to modify these terms and conditions at any time. By continuing to use our services, you accept and agree to be bound by the revised terms.</p>
+    </div>
+  </div>
+</body>
+</html>
