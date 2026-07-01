@@ -27,7 +27,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install npm dependencies
-RUN npm ci
+RUN npm install --legacy-peer-deps
 
 # Copy application source
 COPY tsconfig.json ./
