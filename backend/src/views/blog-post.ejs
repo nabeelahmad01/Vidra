@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= post.title %> - Vidra Blog</title>
+  <meta name="description" content="<%= post.summary %>">
+  <meta name="keywords" content="<%= post.keywords %>">
+  <link rel="canonical" href="<%= siteHost %>/blog/<%= post.slug %>">
+  
+  <!-- Structured JSON-LD Article Schema (Boosts SEO & AdSense Approvals) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "<%= post.title %>",
+      "description": "<%= post.summary %>",
+      "image": "<%= post.coverImage %>",
+      "datePublished": "<%= new Date(post.createdAt).toISOString() %>",
+      "author": {
+        "@type": "Organization",
+        "name": "Vidra Downloader"
+      }
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --app-bg: #EBF0FF;
+      --glass-surface: rgba(255, 255, 255, 0.44);
+      --glass-border: rgba(255, 255, 255, 0.75);
+      --text-primary: #1A1F3A;
+      --text-secondary: #6B7494;
+      --primary-teal: #00E5A0;
+      --primary-coral: #FF6B5A;
+      --secondary-accent: #7B8FFF;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--app-bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .glow-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .glow-teal {
+      top: -100px;
+      left: -100px;
+      width: 400px;
+      height: 400px;
+      background-color: var(--primary-teal);
+      opacity: 0.12;
+    }
+    .glow-coral {
+      bottom: -100px;
+      right: -100px;
+      width: 380px;
+      height: 380px;
+      background-color: var(--primary-coral);
+      opacity: 0.10;
+    }
+
+    header {
+      width: 100%;
+      padding: 24px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    .logo-container {
+      display: flex;
+      align-items: text-decoration;
+      text-decoration: none;
+    }
+    .logo-text {
+      font-size: 28px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--primary-teal), var(--primary-coral));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -1px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .apk-dl-btn {
+      background: linear-gradient(135deg, var(--primary-teal), var(--primary-coral));
+      color: #FFFFFF !important;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: transform 0.2s;
+    }
+
+    main {
+      flex: 1;
+      padding: 40px 8%;
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+      z-index: 10;
+    }
+
+    /* Article Cover & Metadata */
+    .article-header {
+      margin-bottom: 24px;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--secondary-accent);
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    .article-title {
+      font-size: 38px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .article-meta {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+    .cover-img {
+      width: 100%;
+      max-height: 380px;
+      object-fit: cover;
+      border-radius: 20px;
+      margin-bottom: 30px;
+      border: 1.5px solid var(--glass-border);
+    }
+
+    /* Article Content Markup */
+    .article-body {
+      background: var(--glass-surface);
+      border: 1.5px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 30px;
+      line-height: 1.7;
+      font-size: 16px;
+      color: #2D314E;
+      box-shadow: 0 8px 30px rgba(123, 143, 255, 0.05);
+      margin-bottom: 40px;
+    }
+    .article-body h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-top: 28px;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+    .article-body p {
+      margin-bottom: 20px;
+    }
+
+    /* Ad Container styles */
+    .ad-container {
+      width: 100%;
+      min-height: 90px;
+      background: var(--glass-surface);
+      border: 1.5px solid var(--glass-border);
+      border-radius: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 24px 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* In-Article Promotion Card */
+    .promo-card {
+      background: linear-gradient(135deg, rgba(0, 229, 160, 0.1), rgba(255, 107, 90, 0.08));
+      border: 1.5px solid var(--primary-teal);
+      border-radius: 20px;
+      padding: 24px;
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .promo-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .promo-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    footer {
+      width: 100%;
+      padding: 30px 8%;
+      border-top: 1px solid rgba(123, 143, 255, 0.15);
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-secondary);
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-circle glow-teal"></div>
+  <div class="glow-circle glow-coral"></div>
+
+  <header>
+    <a href="/" class="logo-container">
+      <span class="logo-text">Vidra</span>
+    </a>
+    <nav class="nav-links">
+      <a href="/">Extract Video</a>
+      <a href="/blog">Blog Portal</a>
+    </nav>
+  </header>
+
+  <main>
+    <article class="article-header">
+      <a href="/blog" class="back-btn">&larr; Back to Blogs</a>
+      <h1 class="article-title"><%= post.title %></h1>
+      <div class="article-meta">
+        Published on <%= new Date(post.createdAt).toLocaleDateString(undefined, {month: 'long', day: 'numeric', year: 'numeric'}) %>
+      </div>
+    </article>
+
+    <img src="<%= post.coverImage %>" class="cover-img" alt="<%= post.title %>">
+
+    <!-- AdSense slot (Top) -->
+    <div class="ad-container">
+      <span>Google AdSense Slot (Top of Post)</span>
+    </div>
+
+    <!-- Article Content -->
+    <div class="article-body">
+      <%- post.content %>
+      
+      <!-- AdSense slot (Mid Article) -->
+      <div class="ad-container">
+        <span>Google AdSense Slot (Mid Post Banner)</span>
+      </div>
+
+      <!-- In-Article App promo box -->
+      <div class="promo-card">
+        <h3 class="promo-title">Save Videos Offline to Your Phone</h3>
+        <p class="promo-text">Get high-speed downloads, multi-threaded segment stitching, and background queues on our Android client app.</p>
+        <a href="/download/apk" class="apk-dl-btn">Download Standalone APK</a>
+      </div>
+    </div>
+
+    <!-- AdSense slot (Bottom) -->
+    <div class="ad-container">
+      <span>Google AdSense Slot (Bottom of Post)</span>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; <%= new Date().getFullYear() %> Vidra. Scoped direct distribution system. Built for personal media archiving and verification research.</p>
+  </footer>
+</body>
+</html>

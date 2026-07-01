@@ -1,0 +1,43 @@
+# Node modules
+node_modules/
+**/node_modules/
+
+# Environment files
+.env
+.env*.local
+backend/.env
+app/.env
+
+# Android build/IDE files
+app/android/app/build/
+app/android/.gradle/
+app/android/local.properties
+app/android/build/
+.gradle/
+*.keystore
+!app/android/app/debug.keystore
+
+# iOS build/IDE files
+app/ios/build/
+app/ios/Pods/
+app/ios/.xcode.env.local
+
+# Logs and databases
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+
+# Backend build and temporary files
+backend/dist/
+backend/temp_downloads/
+
+# IDE/Editor configurations
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

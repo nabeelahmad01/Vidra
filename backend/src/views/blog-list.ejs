@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vidra Blog Portal - Video Archive Research & Guides</title>
+  <meta name="description" content="Read expert articles and guides on universal video extraction, HLS manifest stitching, direct APK deployment safety, and media backup strategies.">
+  <meta name="keywords" content="video extraction, universal downloader, media blog, direct apk, coding guides">
+  <link rel="canonical" href="<%= siteHost %>/blog">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --app-bg: #EBF0FF;
+      --glass-surface: rgba(255, 255, 255, 0.44);
+      --glass-border: rgba(255, 255, 255, 0.75);
+      --text-primary: #1A1F3A;
+      --text-secondary: #6B7494;
+      --primary-teal: #00E5A0;
+      --primary-coral: #FF6B5A;
+      --secondary-accent: #7B8FFF;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--app-bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Depth Glow Layer */
+    .glow-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .glow-teal {
+      top: -100px;
+      left: -100px;
+      width: 400px;
+      height: 400px;
+      background-color: var(--primary-teal);
+      opacity: 0.12;
+    }
+    .glow-coral {
+      bottom: -100px;
+      right: -100px;
+      width: 380px;
+      height: 380px;
+      background-color: var(--primary-coral);
+      opacity: 0.10;
+    }
+
+    header {
+      width: 100%;
+      padding: 24px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .logo-text {
+      font-size: 28px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--primary-teal), var(--primary-coral));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -1px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .apk-dl-btn {
+      background: linear-gradient(135deg, var(--primary-teal), var(--primary-coral));
+      color: #FFFFFF !important;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: transform 0.2s;
+    }
+    .apk-dl-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    main {
+      flex: 1;
+      padding: 40px 8%;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      z-index: 10;
+    }
+
+    .page-title {
+      font-size: 36px;
+      font-weight: 900;
+      margin-bottom: 30px;
+      letter-spacing: -1px;
+      border-bottom: 2px solid rgba(123, 143, 255, 0.15);
+      padding-bottom: 12px;
+    }
+
+    /* Grid Layout */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    /* Glass Blog Card */
+    .blog-card {
+      background: var(--glass-surface);
+      border: 1.5px solid var(--glass-border);
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 24px rgba(123, 143, 255, 0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .blog-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(123, 143, 255, 0.10);
+    }
+    .card-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .card-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .card-date {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--secondary-accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .card-summary {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+    .read-more {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary-teal);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Ad Container */
+    .ad-container {
+      width: 100%;
+      min-height: 90px;
+      background: var(--glass-surface);
+      border: 1.5px solid var(--glass-border);
+      border-radius: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 30px 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    footer {
+      width: 100%;
+      padding: 30px 8%;
+      border-top: 1px solid rgba(123, 143, 255, 0.15);
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-secondary);
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-circle glow-teal"></div>
+  <div class="glow-circle glow-coral"></div>
+
+  <header>
+    <a href="/" class="logo-container">
+      <span class="logo-text">Vidra</span>
+    </a>
+    <nav class="nav-links">
+      <a href="/">Extract Video</a>
+      <a href="/download/apk" class="apk-dl-btn">Download Android APK</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1 class="page-title">Blog Portal & Resources</h1>
+
+    <!-- Grid items -->
+    <div class="blog-grid">
+      <% posts.forEach(post => { %>
+        <a href="/blog/<%= post.slug %>" class="blog-card">
+          <img src="<%= post.coverImage %>" class="card-img" alt="<%= post.title %>">
+          <div class="card-body">
+            <span class="card-date"><%= new Date(post.createdAt).toLocaleDateString(undefined, {month: 'short', day: 'numeric', year: 'numeric'}) %></span>
+            <h2 class="card-title"><%= post.title %></h2>
+            <p class="card-summary"><%= post.summary %></p>
+            <span class="read-more">Read Guide &rarr;</span>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+
+    <!-- AdSense slot -->
+    <div class="ad-container">
+      <span>Google AdSense Slot (Article Index Banner)</span>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; <%= new Date().getFullYear() %> Vidra. Scoped direct distribution system. Built for personal media archiving and verification research.</p>
+  </footer>
+</body>
+</html>

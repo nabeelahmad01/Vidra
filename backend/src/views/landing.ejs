@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vidra - Universal Video Downloader App & Web Utility</title>
+  <meta name="description" content="Download videos from YouTube, TikTok, Instagram, Twitter, and thousands of other platforms. Get the standalone Vidra Android APK for direct installation.">
+  <meta name="keywords" content="video downloader, free video download, youtube downloader, tiktok downloader, instagram downloader, download apk">
+  <link rel="canonical" href="<%= siteHost %>/">
+  
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  
+  <!-- CSS Styles matching App UI Aesthetics -->
+  <style>
+    :root {
+      --app-bg: #EBF0FF;
+      --glass-surface: rgba(255, 255, 255, 0.44);
+      --glass-border: rgba(255, 255, 255, 0.75);
+      --text-primary: #1A1F3A;
+      --text-secondary: #6B7494;
+      --primary-teal: #00E5A0;
+      --primary-coral: #FF6B5A;
+      --secondary-accent: #7B8FFF;
+      --success: #00C896;
+      --error: #FF5252;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--app-bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Depth Glow Layer */
+    .glow-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .glow-teal {
+      top: -100px;
+      left: -100px;
+      width: 400px;
+      height: 400px;
+      background-color: var(--primary-teal);
+      opacity: 0.12;
+    }
+    .glow-coral {
+      bottom: -100px;
+      right: -100px;
+      width: 380px;
+      height: 380px;
+      background-color: var(--primary-coral);
+      opacity: 0.10;
+    }
+    .glow-indigo {
+      top: 30%;
+      right: 10%;
+      width: 250px;
+      height: 250px;
+      background-color: var(--secondary-accent);
+      opacity: 0.08;
+    }
+
+    /* Layout Header */
+    header {
+      width: 100%;
+      padding: 24px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .logo-text {
+      font-size: 28px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--primary-teal), var(--primary-coral));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -1px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: var(--primary-coral);
+    }
+    .apk-dl-btn {
+      background: linear-gradient(135deg, var(--primary-teal), var(--primary-coral));
+      color: #FFFFFF !important;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: transform 0.2s;
+      box-shadow: 0 4px 12px rgba(123, 143, 255, 0.15);
+    }
+    .apk-dl-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Hero Section */
+    main {
+      flex: 1;
+      padding: 40px 8%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 10;
+    }
+    .hero {
+      text-align: center;
+      max-width: 800px;
+      margin-bottom: 40px;
+    }
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+    .hero p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Ads Slots Containers */
+    .ad-container {
+      width: 100%;
+      max-width: 728px;
+      min-height: 90px;
+      background: var(--glass-surface);
+      border: 1.5px solid var(--glass-border);
+      border-radius: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(123, 143, 255, 0.05);
+    }
+
+    /* Downloader Card */
+    .downloader-card {
+      width: 100%;
+      max-width: 650px;
+      background: var(--glass-surface);
+      border: 1.5px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 32px rgba(123, 143, 255, 0.08);
+      backdrop-filter: blur(10px);
+      margin-bottom: 40px;
+    }
+    .downloader-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 30%;
+      background: rgba(255, 255, 255, 0.12);
+      pointer-events: none;
+    }
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .input-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .url-input {
+      flex: 1;
+      height: 52px;
+      background: rgba(255, 255, 255, 0.6);
+      border: 1.5px solid rgba(255, 255, 255, 0.8);
+      border-radius: 14px;
+      padding: 0 16px;
+      font-size: 16px;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .url-input:focus {
+      border-color: var(--primary-teal);
+    }
+    .submit-btn {
+      height: 52px;
+      padding: 0 24px;
+      background: linear-gradient(135deg, var(--primary-teal), var(--primary-coral));
+      color: #FFFFFF;
+      font-weight: 700;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    .submit-btn:hover {
+      opacity: 0.95;
+    }
+    .submit-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Result Panel */
+    .result-container {
+      margin-top: 24px;
+      display: none;
+      border-top: 1px solid rgba(123, 143, 255, 0.15);
+      padding-top: 20px;
+    }
+    .video-info {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .video-thumb {
+      width: 120px;
+      aspect-ratio: 16/9;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .video-details {
+      flex: 1;
+    }
+    .video-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .video-badge {
+      display: inline-block;
+      font-size: 11px;
+      background: rgba(123, 143, 255, 0.15);
+      color: var(--secondary-accent);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+    .formats-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .format-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.3);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+    .format-left {
+      font-weight: 600;
+    }
+    .format-size {
+      color: var(--text-secondary);
+      font-size: 12px;
+      margin-left: 8px;
+    }
+    .dl-icon-btn {
+      color: var(--primary-teal);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 4px 10px;
+      border: 1px solid var(--primary-teal);
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .dl-icon-btn:hover {
+      background: var(--primary-teal);
+      color: #FFFFFF;
+    }
+
+    /* Loader */
+    .loader {
+      display: none;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3.5px solid rgba(123, 143, 255, 0.15);
+      border-top-color: var(--primary-teal);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Footer */
+    footer {
+      width: 100%;
+      padding: 30px 8%;
+      border-top: 1px solid rgba(123, 143, 255, 0.15);
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-secondary);
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <!-- Ambient backdrop lights -->
+  <div class="glow-circle glow-teal"></div>
+  <div class="glow-circle glow-coral"></div>
+  <div class="glow-circle glow-indigo"></div>
+
+  <!-- Header Section -->
+  <header>
+    <a href="/" class="logo-container">
+      <span class="logo-text">Vidra</span>
+    </a>
+    <nav class="nav-links">
+      <a href="/blog">Blog Portal</a>
+      <a href="/download/apk" class="apk-dl-btn">Download Android APK</a>
+    </nav>
+  </header>
+
+  <!-- Main Portal -->
+  <main>
+    <section class="hero">
+      <h1>Universal Video Downloader Engine</h1>
+      <p>Instant video metadata extractions from major platforms and generic scrapers. Paste links below or download our standalone APK to save files offline in high resolution.</p>
+    </section>
+
+    <!-- Top Ad Banner -->
+    <div class="ad-container">
+      <!-- GOOGLE ADSENSE PLACEHOLDER SLOT -->
+      <ins class="adsbygoogle"
+           style="display:block; width: 728px; height: 90px;"
+           data-ad-client="ca-pub-placeholder"
+           data-ad-slot="1234567890"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      <span>Google AdSense Slot (Banner 728x90)</span>
+    </div>
+
+    <!-- Web Downloader Interface -->
+    <div class="downloader-card">
+      <h2 class="card-title">Extract Video Online</h2>
+      <div class="input-row">
+        <input type="url" id="targetUrl" class="url-input" placeholder="Paste web link here (e.g. YouTube, TikTok, MP4 URL)..." required>
+        <button onclick="extractVideo()" id="extractBtn" class="submit-btn">Extract</button>
+      </div>
+
+      <div class="loader" id="loader">
+        <div class="spinner"></div>
+      </div>
+
+      <div id="errorMessage" style="color: var(--error); font-weight: 600; text-align: center; margin-top: 10px; display: none;"></div>
+
+      <!-- Extraction Results -->
+      <div class="result-container" id="resultContainer">
+        <div class="video-info">
+          <img src="" id="resThumb" class="video-thumb" alt="Thumbnail">
+          <div class="video-details">
+            <h3 id="resTitle" class="video-title">Video Name</h3>
+            <span id="resPlatform" class="video-badge">YT-DLP</span>
+          </div>
+        </div>
+        <div class="formats-list" id="resFormats">
+          <!-- Dynamically populated format listings -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Ad Banner -->
+    <div class="ad-container">
+      <span>Google AdSense Slot (Responsive Banner)</span>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; <%= new Date().getFullYear() %> Vidra. Scoped direct distribution system. Built for personal media archiving and verification research.</p>
+  </footer>
+
+  <!-- Web downloader extraction logic -->
+  <script>
+    async function extractVideo() {
+      const urlInput = document.getElementById('targetUrl');
+      const btn = document.getElementById('extractBtn');
+      const loader = document.getElementById('loader');
+      const resultContainer = document.getElementById('resultContainer');
+      const errorMsg = document.getElementById('errorMessage');
+
+      const url = urlInput.value.trim();
+      if (!url) return;
+
+      // Reset states
+      resultContainer.style.display = 'none';
+      errorMsg.style.display = 'none';
+      loader.style.display = 'flex';
+      btn.disabled = true;
+
+      try {
+        // First register a temp device session to get valid JWT token (since API requires JWT authentication!)
+        const regRes = await fetch('/api/device/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ deviceId: 'web_session_' + Math.random().toString(36).substring(7) })
+        });
+        
+        if (!regRes.ok) throw new Error('Authentication failed');
+        const { token } = await regRes.json();
+
+        // Trigger extraction API
+        const extRes = await fetch('/api/extract', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ url })
+        });
+
+        if (!extRes.ok) {
+          const errData = await extRes.json();
+          throw new Error(errData.error || 'Failed to extract video details');
+        }
+
+        const extData = await extRes.json();
+        
+        if (extData.status === 'completed' && extData.result) {
+          renderResult(extData.result);
+        } else if (extData.status === 'pending' && extData.jobId) {
+          pollStatus(extData.jobId, token);
+        } else {
+          throw new Error('Unexpected extraction result');
+        }
+      } catch (err) {
+        loader.style.display = 'none';
+        btn.disabled = false;
+        errorMsg.innerText = err.message;
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    async function pollStatus(jobId, token) {
+      const loader = document.getElementById('loader');
+      const btn = document.getElementById('extractBtn');
+      const errorMsg = document.getElementById('errorMessage');
+
+      let attempts = 0;
+      const interval = setInterval(async () => {
+        attempts++;
+        if (attempts > 20) {
+          clearInterval(interval);
+          loader.style.display = 'none';
+          btn.disabled = false;
+          errorMsg.innerText = 'Extraction timed out. Try again.';
+          errorMsg.style.display = 'block';
+          return;
+        }
+
+        try {
+          const res = await fetch('/api/extract/status/' + jobId, {
+            headers: { 'Authorization': 'Bearer ' + token }
+          });
+          const data = await res.json();
+          
+          if (data.status === 'completed' && data.result) {
+            clearInterval(interval);
+            renderResult(data.result);
+          } else if (data.status === 'failed') {
+            clearInterval(interval);
+            throw new Error(data.error || 'Extraction processing failed');
+          }
+        } catch (err) {
+          clearInterval(interval);
+          loader.style.display = 'none';
+          btn.disabled = false;
+          errorMsg.innerText = err.message;
+          errorMsg.style.display = 'block';
+        }
+      }, 1500);
+    }
+
+    function renderResult(result) {
+      const loader = document.getElementById('loader');
+      const btn = document.getElementById('extractBtn');
+      const resultContainer = document.getElementById('resultContainer');
+      
+      document.getElementById('resThumb').src = result.thumbnail || 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=400&q=80';
+      document.getElementById('resTitle').innerText = result.title;
+      document.getElementById('resPlatform').innerText = result.sourcePlatform.toUpperCase();
+
+      const formatsList = document.getElementById('resFormats');
+      formatsList.innerHTML = '';
+
+      if (result.videos && result.videos.length > 0) {
+        result.videos.forEach(v => {
+          const item = document.createElement('div');
+          item.className = 'format-item';
+          
+          const label = document.createElement('div');
+          label.className = 'format-left';
+          label.innerText = v.quality + ' (' + v.format + ')';
+          
+          if (v.sizeEstimate) {
+            const sizeSpan = document.createElement('span');
+            sizeSpan.className = 'format-size';
+            sizeSpan.innerText = (v.sizeEstimate / (1024 * 1024)).toFixed(1) + ' MB';
+            label.appendChild(sizeSpan);
+          }
+
+          const dlBtn = document.createElement('a');
+          dlBtn.className = 'dl-icon-btn';
+          dlBtn.innerText = 'Download';
+          dlBtn.href = v.url;
+          dlBtn.target = '_blank';
+
+          item.appendChild(label);
+          item.appendChild(dlBtn);
+          formatsList.appendChild(item);
+        });
+      } else {
+        formatsList.innerHTML = '<p style="color: var(--text-secondary); text-align:center;">No streams format list found.</p>';
+      }
+
+      loader.style.display = 'none';
+      btn.disabled = false;
+      resultContainer.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
