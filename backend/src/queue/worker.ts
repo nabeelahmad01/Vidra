@@ -5,7 +5,7 @@ import fs from 'fs';
 import { spawn, execFile } from 'child_process';
 import { createClient } from 'redis';
 import ffmpegStatic from 'ffmpeg-static';
-import { queueConnection } from './connection';
+import { queueConnection, queuePrefix } from './connection';
 import { extractWithYtdlp, getDlpPath } from '../extractors/ytdlp-handler';
 import { cheerioScrapingPass } from '../extractors/generic/cheerio-pass';
 import { puppeteerScrapingPass } from '../extractors/generic/puppeteer-pass';
@@ -23,8 +23,8 @@ export const redisClient = createClient({
 redisClient.connect().catch(console.error);
 
 // Define queues so workers can enqueue follow-up steps
-export const puppeteerQueue = new Queue('puppeteer-queue', { connection: queueConnection });
-export const mergeQueue = new Queue('merge-queue', { connection: queueConnection });
+export const puppeteerQueue = new Queue('puppeteer-queue', { connection: queueConnection, prefix: queuePrefix });
+export const mergeQueue = new Queue('merge-queue', { connection: queueConnection, prefix: queuePrefix });
 
 // Helper to hash URL for caching
 export function getUrlHash(url: string): string {
@@ -71,7 +71,7 @@ export const ytdlpWorker = new Worker(
       }
     }
   },
-  { connection: queueConnection, concurrency: 5 }
+  { connection: queueConnection, concurrency: 5, prefix: queuePrefix }
 );
 
 // 2. Puppeteer Worker (Heavy Queue)
@@ -98,7 +98,7 @@ export const puppeteerWorker = new Worker(
       throw err;
     }
   },
-  { connection: queueConnection, concurrency: 2 } // Keep low to limit browser resource usage
+  { connection: queueConnection, concurrency: 2, prefix: queuePrefix } // Keep low to limit browser resource usage
 );
 
 function downloadStream(url: string, formatId: string, destPath: string): Promise<void> {
@@ -198,5 +198,5 @@ export const mergeWorker = new Worker(
       } catch {}
     }
   },
-  { connection: queueConnection, concurrency: 2 }
+  { connection: queueConnection, concurrency: 2, prefix: queuePrefix }
 );

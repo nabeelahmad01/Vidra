@@ -1,5 +1,5 @@
 import { ConnectionOptions } from 'bullmq';
-import { REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, REDIS_TLS } from '../config/constants';
+import { REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, REDIS_TLS, NODE_ENV } from '../config/constants';
 
 export const queueConnection: ConnectionOptions = {
   host: REDIS_HOST,
@@ -9,3 +9,6 @@ export const queueConnection: ConnectionOptions = {
   ...(REDIS_PASSWORD ? { password: REDIS_PASSWORD } : {}),
   ...(REDIS_TLS ? { tls: {} } : {})
 };
+
+// Separates localhost and production queues to avoid message stealing
+export const queuePrefix = NODE_ENV === 'production' ? 'bull:prod' : 'bull:dev';

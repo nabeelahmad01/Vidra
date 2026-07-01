@@ -9,7 +9,7 @@ import path from 'path';
 import fs from 'fs';
 import rateLimit from 'express-rate-limit';
 import { RedisStore } from 'rate-limit-redis';
-import { queueConnection } from '../queue/connection';
+import { queueConnection, queuePrefix } from '../queue/connection';
 import { redisClient, getUrlHash } from '../queue/worker';
 import { authenticateJWT, ssrfFilter } from '../middleware/security';
 import { resolveManifestVariants } from '../extractors/generic/manifest-resolver';
@@ -18,8 +18,8 @@ import { JWT_SECRET, DOWNLOADS_DIR, PUBLIC_HOST, YTDLP_ONLY_DOMAINS } from '../c
 const router = Router();
 
 // Initialize BullMQ queues
-const ytdlpQueue = new Queue('ytdlp-queue', { connection: queueConnection });
-const mergeQueue = new Queue('merge-queue', { connection: queueConnection });
+const ytdlpQueue = new Queue('ytdlp-queue', { connection: queueConnection, prefix: queuePrefix });
+const mergeQueue = new Queue('merge-queue', { connection: queueConnection, prefix: queuePrefix });
 
 // 1. Rate Limiting Setup using Redis
 const apiLimiter = rateLimit({
