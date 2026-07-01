@@ -964,6 +964,8 @@
 
   <!-- Web downloader extraction logic -->
   <script>
+    let currentToken = '';
+
     // Hamburger navigation menu toggle
     function toggleMenu() {
       const hamburger = document.getElementById('hamburgerBtn');
@@ -985,6 +987,98 @@
       if (!isVisible) {
         answer.style.display = 'block';
         icon.innerText = '-';
+      }
+    }
+
+    // Dynamic Video/Audio Merger Polling Trigger
+    async function startDownload(btn, videoUrl, formatId, requiresMerge, formatExt, title, token) {
+      const originalText = btn.innerText;
+      
+      if (!requiresMerge) {
+        // Direct stream, download via proxy immediately (already has audio)
+        const proxyUrl = '/api/download/proxy?url=' + encodeURIComponent(videoUrl) + '&filename=' + encodeURIComponent(title + '.' + formatExt);
+        window.location.href = proxyUrl;
+        return;
+      }
+
+      // High-quality split format, requires server-side FFmpeg stitch
+      btn.innerText = 'Stitching...';
+      btn.style.pointerEvents = 'none';
+      btn.style.opacity = '0.65';
+
+      try {
+        const prepRes = await fetch('/api/download/prepare', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            url: document.getElementById('targetUrl').value.trim(),
+            formatId: formatId
+          })
+        });
+
+        if (!prepRes.ok) throw new Error('Merge request failed');
+        const prepData = await prepRes.json();
+
+        // If it's already cached or progressive
+        if (prepData.status === 'ready' && prepData.url) {
+          window.location.href = '/api/download/proxy?url=' + encodeURIComponent(prepData.url) + '&filename=' + encodeURIComponent(title + '.' + formatExt);
+          btn.innerText = originalText;
+          btn.style.pointerEvents = 'auto';
+          btn.style.opacity = '1';
+          return;
+        }
+
+        // Poll merge status
+        const jobId = prepData.mergeJobId;
+        let attempts = 0;
+        const interval = setInterval(async () => {
+          attempts++;
+          if (attempts > 80) { // Max 2 minutes
+            clearInterval(interval);
+            alert('Video processing took too long. Please retry.');
+            btn.innerText = originalText;
+            btn.style.pointerEvents = 'auto';
+            btn.style.opacity = '1';
+            return;
+          }
+
+          try {
+            const statusRes = await fetch('/api/download/prepare/status/' + jobId, {
+              headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const statusData = await statusRes.json();
+
+            if (statusData.status === 'completed' && statusData.downloadUrl) {
+              clearInterval(interval);
+              btn.innerText = 'Downloading!';
+              window.location.href = statusData.downloadUrl;
+              
+              setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.pointerEvents = 'auto';
+                btn.style.opacity = '1';
+              }, 2500);
+            } else if (statusData.status === 'failed') {
+              clearInterval(interval);
+              throw new Error(statusData.error || 'Server FFmpeg merge failed');
+            }
+          } catch (pollErr) {
+            clearInterval(interval);
+            alert('Error rendering video: ' + pollErr.message);
+            btn.innerText = originalText;
+            btn.style.pointerEvents = 'auto';
+            btn.style.opacity = '1';
+          }
+        }, 1500);
+
+      } catch (err) {
+        alert('Stitching error: ' + err.message);
+        btn.innerText = originalText;
+        btn.style.pointerEvents = 'auto';
+        btn.style.opacity = '1';
       }
     }
 
@@ -1015,6 +1109,7 @@
         
         if (!regRes.ok) throw new Error('Authentication failed');
         const { token } = await regRes.json();
+        currentToken = token;
 
         // Trigger extraction API
         const extRes = await fetch('/api/extract', {
@@ -1117,10 +1212,15 @@
           }
 
           const ext = (v.type && v.type.includes('/')) ? v.type.split('/')[1] : 'mp4';
-          const dlBtn = document.createElement('a');
+          
+          // Action button calling merger handler
+          const dlBtn = document.createElement('button');
           dlBtn.className = 'dl-icon-btn';
           dlBtn.innerText = 'Download';
-          dlBtn.href = '/api/download/proxy?url=' + encodeURIComponent(v.url) + '&filename=' + encodeURIComponent(result.title + '.' + ext);
+          dlBtn.style.cursor = 'pointer';
+          dlBtn.onclick = function() {
+            startDownload(this, v.url, v.formatId, v.requiresMerge, ext, result.title, currentToken);
+          };
 
           item.appendChild(label);
           item.appendChild(dlBtn);
