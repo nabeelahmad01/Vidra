@@ -9,6 +9,7 @@ import path from 'path';
 import fs from 'fs';
 import apiRouter from './routes/api';
 import webRouter from './routes/web';
+import './queue/worker'; // Start BullMQ workers
 import { PORT, NODE_ENV } from './config/constants';
 import { initializeYtdlp } from './services/updater';
 
