@@ -72,7 +72,8 @@ export async function extractWithYtdlp(url: string): Promise<ExtractionResult> {
         if (isUnsupported) {
           reject(new Error('UNSUPPORTED_URL'));
         } else {
-          const cleanError = stderrData.split('\n')[0] || 'Unknown yt-dlp error';
+          const lines = stderrData.trim().split('\n').filter(Boolean);
+          const cleanError = lines.slice(-2).join(' | ') || 'Unknown yt-dlp error';
           reject(new Error(`YTDLP_ERROR: ${cleanError}`));
         }
         return;
