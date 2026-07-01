@@ -125,7 +125,10 @@ function downloadStream(url: string, formatId: string, destPath: string): Promis
         resolve();
       } else {
         console.error(`[downloadStream] yt-dlp failed with code ${code}. Error: ${stderrData}`);
-        reject(new Error(`yt-dlp download failed with code ${code}: ${stderrData.split('\n')[0]}`));
+        // Extract the actual error description from the end of the traceback
+        const lines = stderrData.trim().split('\n').filter(Boolean);
+        const cleanErr = lines.slice(-2).join(' | ') || 'Unknown error';
+        reject(new Error(`yt-dlp download failed with code ${code}: ${cleanErr}`));
       }
     });
   });
