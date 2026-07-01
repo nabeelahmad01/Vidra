@@ -770,10 +770,11 @@
             label.appendChild(sizeSpan);
           }
 
+          const ext = (v.type && v.type.includes('/')) ? v.type.split('/')[1] : 'mp4';
           const dlBtn = document.createElement('a');
           dlBtn.className = 'dl-icon-btn';
           dlBtn.innerText = 'Download';
-          dlBtn.href = '/api/download/proxy?url=' + encodeURIComponent(v.url) + '&filename=' + encodeURIComponent(result.title + '.' + (v.format || 'mp4'));
+          dlBtn.href = '/api/download/proxy?url=' + encodeURIComponent(v.url) + '&filename=' + encodeURIComponent(result.title + '.' + ext);
 
           item.appendChild(label);
           item.appendChild(dlBtn);
