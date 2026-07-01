@@ -196,17 +196,8 @@ router.get('/download/file/:filename', async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Requested file not found or expired' });
     }
 
-    // Serve and auto-delete file after delivery is complete
-    return res.download(filePath, filename, (err) => {
-      if (!err) {
-        try {
-          fs.unlinkSync(filePath);
-          console.log(`[api] Cleaned up merged file after delivery: ${filename}`);
-        } catch (unlinkErr) {
-          console.error(`[api] Failed to delete file ${filename} after download:`, unlinkErr);
-        }
-      }
-    });
+    // Serve the file. The periodic hourly cleanup cron will handle temporary file deletion.
+    return res.download(filePath, filename);
   } catch (err) {
     return res.status(403).json({ error: 'Expired or invalid download token' });
   }
