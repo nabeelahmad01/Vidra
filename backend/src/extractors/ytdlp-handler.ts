@@ -42,6 +42,8 @@ export async function extractWithYtdlp(url: string): Promise<ExtractionResult> {
     '--dump-json',
     '--no-warnings',
     '--no-playlist',
+    '--client-impersonate', 'chrome',
+    '--extractor-args', 'youtube:player_client=ios,web',
     url
   ];
 
