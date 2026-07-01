@@ -240,7 +240,7 @@ router.get('/download/proxy', ssrfFilter, (req: Request, res: Response) => {
     return res.status(400).send('URL is required');
   }
 
-  const targetUrl = decodeURIComponent(url as string);
+  const targetUrl = url as string;
   const targetFilename = (filename as string) || 'video.mp4';
 
   try {
@@ -257,6 +257,13 @@ router.get('/download/proxy', ssrfFilter, (req: Request, res: Response) => {
     };
 
     const proxyReq = client.get(targetUrl, requestOptions, (proxyRes) => {
+      // Check for non-200 responses to prevent piping empty error pages
+      if (proxyRes.statusCode !== 200) {
+        console.error(`[Proxy Download] Remote server returned status ${proxyRes.statusCode}`);
+        res.status(proxyRes.statusCode || 502).send(`Download failed. Remote server returned status ${proxyRes.statusCode}`);
+        return;
+      }
+
       // Set response headers to force download attachment
       res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(targetFilename)}"`);
       res.setHeader('Content-Type', proxyRes.headers['content-type'] || 'video/mp4');
