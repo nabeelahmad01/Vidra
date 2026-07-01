@@ -17,7 +17,9 @@ const auth = REDIS_PASSWORD ? `default:${encodeURIComponent(REDIS_PASSWORD)}@` :
 const redisUrl = `${protocol}://${auth}${REDIS_HOST}:${REDIS_PORT}`;
 
 export const redisClient = createClient({
-  url: redisUrl
+  url: redisUrl,
+  username: 'default',
+  password: REDIS_PASSWORD
 });
 redisClient.connect().catch(console.error);
 
